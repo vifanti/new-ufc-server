@@ -1,5 +1,4 @@
 import * as mongoose from "mongoose";
-import * as bcrypt from "bcrypt";
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -25,11 +24,4 @@ const UserSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
-// hash user password before saving into database
-UserSchema.pre("save", function(next) {
-  this.password = bcrypt.hashSync(this.password, 10);
-  next();
-});
-
 export default UserSchema;

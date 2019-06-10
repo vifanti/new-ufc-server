@@ -1,5 +1,7 @@
 import UserRepository from "../repositories/userRepository";
 import * as httpStatus from "http-status";
+import * as bcrypt from "bcrypt";
+import { generateHash } from "random-hash";
 
 const sendReponse = function(res, statusCode, data) {
   res.status(statusCode).json({ result: data });
@@ -26,14 +28,39 @@ class UserController {
     }
   }
 
+  authenticate(req, res) {
+    console.log("cheguei aqui");
+    // UserRepository.findOne(req.body.email)
+    //   .then(menus => {
+    //     sendReponse(res, httpStatus.OK, menus);
+    //   })
+    //   .catch(err => console.error.bind(console, `Error ${err}`));
+  }
+
   register(req, res) {
-    UserRepository.register(req.body)
-      .then(menus => sendReponse(res, httpStatus.CREATED, menus))
+    console.log("cheguei aqui");
+    UserRepository.register({
+      name: req.body.name,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password, 10),
+      contentAccessKey: generateHash({ length: 60 }),
+      admin: true
+    })
+      .then(menus => {
+        console.log("autenticar aqui");
+        sendReponse(res, httpStatus.CREATED, menus);
+      })
       .catch(err => console.error.bind(console, `Error ${err}`));
   }
 
   create(req, res) {
-    UserRepository.create(req.body)
+    UserRepository.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password, 10),
+      contentAccessKey: req.body.contentAccessKey,
+      admin: req.body.admin
+    })
       .then(menus => sendReponse(res, httpStatus.CREATED, menus))
       .catch(err => console.error.bind(console, `Error ${err}`));
   }

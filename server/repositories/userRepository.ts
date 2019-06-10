@@ -1,6 +1,5 @@
 import * as mongoose from "mongoose";
 import UserSchema from "../schemas/userSchema";
-import { generateHash } from 'random-hash';
 
 class UserRepository {
   private model;
@@ -17,14 +16,12 @@ class UserRepository {
     return this.model.findById(_id);
   }
 
+  findOne(email){
+    return this.model.findOne({ email: email });
+  }
+
   register(user) {
-    return this.model.create({
-      name: user.name,
-      email: user.email,
-      password: user.password,
-      contentAccessKey: generateHash({ length: 60 }),
-      admin: true
-    });
+    return this.model.create(user);
   }
 
   create(user) {

@@ -63,9 +63,9 @@ class App {
     });
 
     this.app.route("/api/v2/register").post(UserController.register);
+    this.app.route("/api/v2/authenticate").post(UserController.authenticate);
 
-
-    this.app.use(Auth.validate);
+    // this.app.use(Auth.validate);
     this.app.route("/api/v2/users").get(UserController.get);
     this.app.route("/api/v2/users").post(UserController.create);
     this.app.route("/api/v2/users/:id").get(UserController.getById);
