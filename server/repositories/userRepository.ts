@@ -8,15 +8,15 @@ class UserRepository {
     this.model = mongoose.model("User", UserSchema);
   }
 
-  getAll() {
-    return this.model.find({});
+  getAll(contentAccessKey) {
+    return this.model.find({ contentAccessKey: contentAccessKey });
   }
 
-  getById(_id) {
-    return this.model.findById(_id);
+  getById(_id, contentAccessKey) {
+    return this.model.find({ _id: _id, contentAccessKey: contentAccessKey });
   }
 
-  findOne(email){
+  findOne(email) {
     return this.model.findOne({ email: email });
   }
 
@@ -25,16 +25,20 @@ class UserRepository {
   }
 
   create(user) {
-    return this.model.save(user);
+    return this.model.create(user);
   }
 
-  update(_id, user) {
+  update(_id, user, contentAccessKey) {
     const updateUser = (<any>Object).assign({}, user);
-    return this.model.findByIdAndUpdate(_id, updateUser, { new: true });
+    return this.model.findOneAndUpdate(
+      { _id: _id, contentAccessKey: contentAccessKey },
+      updateUser,
+      { new: true }
+    );
   }
 
-  delete(_id) {
-    return this.model.findByIdAndRemove(_id);
+  delete(_id, contentAccessKey) {
+    return this.model.findOneAndRemove({ _id: _id, contentAccessKey: contentAccessKey});
   }
 }
 

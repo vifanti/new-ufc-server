@@ -7,8 +7,9 @@ class Auth {
 
   validate(req, res, next) {
     var token = req.headers["x-access-token"];
+    var contentAccessKey = req.headers["x-access-content"];
 
-    if (token) {
+    if (token && contentAccessKey) {
       jwt.verify(token, Config.secret, function(err, decoded) {
         if (err) {
           return res.json({
@@ -17,7 +18,6 @@ class Auth {
           });
         } else {
           req.body.userId = decoded.id;
-          console.log("OK");
           next();
         }
       });

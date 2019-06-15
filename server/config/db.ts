@@ -5,7 +5,7 @@ class Database {
     private DB_URI = 'mongodb+srv://vifanti:280695@crud-nodejs-vf8hk.mongodb.net/test?retryWrites=true&w=majority';
     private DB_CONNECTION;
 
-    constructor() { }
+    constructor() { mongoose.set('useFindAndModify', false); }
 
     createConnection() {
         mongoose.connect(this.DB_URI, { useNewUrlParser: true });
