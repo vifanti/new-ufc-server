@@ -8,7 +8,10 @@ class UserRepository {
     this.model = mongoose.model("User", UserSchema);
   }
 
-  getAll(contentAccessKey) {
+  get(contentAccessKey, name?) {
+    if (name) {
+      return this.model.find({ name: { $regex: name, $options: "i" }, contentAccessKey: contentAccessKey} );
+    }
     return this.model.find({ contentAccessKey: contentAccessKey });
   }
 

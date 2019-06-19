@@ -67,7 +67,9 @@ class App {
 
     this.app.use(Auth.validate);
     
+    //Users routes
     this.app.route("/api/v2/users").get(UserController.get);
+    this.app.route("/api/v2/users/search").get(UserController.search);
     this.app.route("/api/v2/users").post(UserController.create);
     this.app.route("/api/v2/users/:id").get(UserController.getById);
     this.app.route("/api/v2/users/:id").put(UserController.update);

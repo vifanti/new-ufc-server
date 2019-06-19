@@ -24,4 +24,5 @@ const UserSchema = new mongoose.Schema({
     default: Date.now
   }
 });
+UserSchema.index({'$**': 'text'});
 export default UserSchema;
