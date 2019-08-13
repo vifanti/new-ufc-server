@@ -1,14 +1,14 @@
-import * as express from "express";
-import * as morgan from "morgan";
-import * as bodyParser from "body-parser";
-import DataBase from "./config/db";
-import * as cors from "cors";
-import uploads from "./config/uploads";
+import * as express from 'express';
+import * as morgan from 'morgan';
+import * as bodyParser from 'body-parser';
+import DataBase from './config/db';
+import * as cors from 'cors';
+import uploads from './config/uploads';
 
-import Auth from "./config/auth";
+import Auth from './config/auth';
 
 //Route
-import UserController from "./controllers/userController";
+import UserController from './controllers/userController';
 
 class App {
   public app: express.Application;
@@ -28,15 +28,15 @@ class App {
   enableCors() {
     const options: cors.CorsOptions = {
       allowedHeaders: [
-        "Origin",
-        "X-Requested-With",
-        "Content-Type",
-        "Accept",
-        "X-Access-Token"
+        'Origin',
+        'X-Requested-With',
+        'Content-Type',
+        'Accept',
+        'X-Access-Token'
       ],
       credentials: true,
-      methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-      origin: "*",
+      methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+      origin: '*',
       preflightContinue: false
     };
 
@@ -52,28 +52,34 @@ class App {
   }
 
   middleware() {
-    this.app.use(morgan("dev"));
+    this.app.use(morgan('dev'));
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
   }
 
   routes() {
-    this.app.route("/").get((req, res) => {
-      res.send({ result: "version 2.0" });
+    this.app.route('/').get((req, res) => {
+      res.send({ result: 'version 2.0' });
     });
 
-    this.app.route("/api/v2/register").post(UserController.register);
-    this.app.route("/api/v2/authenticate").post(UserController.authenticate);
+    this.app.route('/api/v2/register').post(UserController.register);
+    this.app.route('/api/v2/authenticate').post(UserController.authenticate);
 
     this.app.use(Auth.validate);
-    
+
     //Users routes
-    this.app.route("/api/v2/users").get(UserController.get);
-    this.app.route("/api/v2/users/search").get(UserController.search);
-    this.app.route("/api/v2/users").post(UserController.create);
-    this.app.route("/api/v2/users/:id").get(UserController.getById);
-    this.app.route("/api/v2/users/:id").put(UserController.update);
-    this.app.route("/api/v2/users/:id").delete(UserController.delete);
+    this.app
+      .route('/api/v2/users')
+      .get(UserController.get)
+      .post(UserController.create);
+
+    this.app.route('/api/v2/users/search').get(UserController.search);
+
+    this.app
+      .route('/api/v2/users/:id')
+      .get(UserController.getById)
+      .put(UserController.update)
+      .delete(UserController.delete);
   }
 }
 
